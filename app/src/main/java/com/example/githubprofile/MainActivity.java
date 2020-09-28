@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity{
     private ArrayList<Profile> Profiles = new ArrayList<>();
     private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +42,15 @@ public class MainActivity extends AppCompatActivity{
         rvProfile = findViewById(R.id.rv_profile);
         rvProfile.setHasFixedSize(true);
 
+        progressBar= findViewById(R.id.progressBar);
+
+
         getListProfiles();
 
     }
 
     public void getListProfiles(){
+        progressBar.setVisibility(View.VISIBLE);
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.github.com/users?q=sidiqpermana";
 //        client.addHeader("Authorization", "token f870bb864a2edeb5d3b1eaa7ba7d001c9b9dcbce");
@@ -52,8 +58,7 @@ public class MainActivity extends AppCompatActivity{
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-// tidak perlu, karena udah private diclass
-//ArrayList<profile> Profiles = new ArrayList<>();
+                progressBar.setVisibility(View.INVISIBLE);
                 String result = new String(responseBody);
                 Log.d(TAG, result);
                 try {
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity{
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progressBar.setVisibility(View.INVISIBLE);
                 String respBody = new String(responseBody);
                 Log.d(TAG, "onFailure: gagal api "+respBody);
                 String errorMessage;
@@ -128,4 +134,6 @@ public class MainActivity extends AppCompatActivity{
         detailIntent.putExtra(DetailProfile.EXTRA_PROFILE, profile);
         startActivity(detailIntent);
     }
+
+
  }
