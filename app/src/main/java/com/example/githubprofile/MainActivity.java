@@ -40,38 +40,41 @@ public class MainActivity extends AppCompatActivity{
         rvProfile = findViewById(R.id.rv_profile);
         rvProfile.setHasFixedSize(true);
 
-//        Profiles.addAll(getListProfiles());
         getListProfiles();
-        showRecylerList();
+
     }
 
     public void getListProfiles(){
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.github.com/users?q=sidiqpermana";
-        client.addHeader("Authorization", "token f870bb864a2edeb5d3b1eaa7ba7d001c9b9dcbce");
+//        client.addHeader("Authorization", "token f870bb864a2edeb5d3b1eaa7ba7d001c9b9dcbce");
         client.addHeader("User-Agent", "request");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                ArrayList<Profile> Profiles = new ArrayList<>();
+// tidak perlu, karena udah private diclass
+//ArrayList<profile> Profiles = new ArrayList<>();
                 String result = new String(responseBody);
                 Log.d(TAG, result);
                 try {
                     Log.d(TAG, "onSuccess: api berhasil");
-                    JSONObject responeObject = new JSONObject(result);
-                    JSONArray items = responeObject.getJSONArray("items");
+// objek pertama adalah array.. bukan objek json
+//JSONObject responeObject = new JSONObject(result);
+                    JSONArray items = new JSONArray(result);
 
                     for (int i = 0; i < items.length(); i++ ) {
                         JSONObject item = items.getJSONObject(i);
                         Profile profile = new Profile();
-//                        String api_userName = item.getString("login");
-//                        String api_Avatar = item.getString("avatar_url");
+// String api_userName = item.getString("login");
+// String api_Avatar = item.getString("avatar_url");
                         profile.setUsername(item.getString("login"));
                         profile.setImgavatar(item.getString("avatar_url"));
-//                        profile.setUsername(api_userName);
-//                        profile.setImgavatar(api_Avatar);
+// profile.setUsername(api_userName);
+// profile.setImgavatar(api_Avatar);
                         Profiles.add(profile);
                     }
+
+                    showRecylerList();
 
                 }catch (Exception e) {
                     e.printStackTrace();
@@ -80,7 +83,8 @@ public class MainActivity extends AppCompatActivity{
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d(TAG, "onFailure: gagal api");
+                String respBody = new String(responseBody);
+                Log.d(TAG, "onFailure: gagal api "+respBody);
                 String errorMessage;
                 switch (statusCode) {
                     case 401:
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+
     private void showRecylerList() {
         Log.d(TAG, "showRecylerList: list data");
         rvProfile.setLayoutManager(new LinearLayoutManager(this));
@@ -120,7 +125,6 @@ public class MainActivity extends AppCompatActivity{
         Intent detailIntent = new Intent(MainActivity.this, DetailProfile.class);
 //        data
         getListProfiles();
-
         detailIntent.putExtra(DetailProfile.EXTRA_PROFILE, profile);
         startActivity(detailIntent);
     }
