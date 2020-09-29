@@ -3,7 +3,8 @@
     <string name="perusahaan">perusahaan</string>
     <string name="username">username</string>
     <string name="nama_profil">Nama Profil</string>
-
+    <string name="search">Search</string>
+    <string name="search_hint">Search username</string>
     <string-array name="username">
         <item>JakeWharton</item>
         <item>amitshekhariitbhu</item>
