@@ -12,10 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DetailProfileNew"></activity>
-        <activity
-            android:name=".DetailProfile"
-            android:label="Detail Profile" />
-        <activity android:name=".MainActivity">
+         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

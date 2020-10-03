@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity{
         Intent detailIntent = new Intent(MainActivity.this, DetailProfileNew.class);
 //        data
         getListProfiles();
-        detailIntent.putExtra(DetailProfile.EXTRA_PROFILE, profile);
+        detailIntent.putExtra(DetailProfileNew.EXTRA_PROFILE, profile);
         Log.d(TAG, "showSelectedHero: pemanggilan Main" +profile);
         startActivity(detailIntent);
     }
