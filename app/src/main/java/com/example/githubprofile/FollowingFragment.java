@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -35,6 +36,7 @@ public class FollowingFragment extends Fragment {
     private ArrayList<Profile> Profiles = new ArrayList<>();
     private static final String TAG = "";
     String username;
+    private ProgressBar progressBarFollowing;
     // TODO: Rename and change types of parameters
 
     private RecyclerView rvFrgFollowingProfile;
@@ -67,12 +69,15 @@ public class FollowingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvFrgFollowingProfile = view.findViewById(R.id.rv_frg_following_profile);
         rvFrgFollowingProfile.setHasFixedSize(true);
+        progressBarFollowing = view.findViewById(R.id.progressBarFollowing);
+
 
         getListProfiles(username);
         Log.d(TAG, "onViewCreated: onview fragment"+username);
     }
 
     private void getListProfiles(String username){
+        progressBarFollowing.setVisibility(View.VISIBLE);
         Log.d(TAG, "getListProfiles: fragment "+username);
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.github.com/users/"+username+"/following";
@@ -82,6 +87,7 @@ public class FollowingFragment extends Fragment {
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                progressBarFollowing.setVisibility(View.INVISIBLE);
                 String result = new String(responseBody);
 
                 Log.d(TAG, result);
@@ -104,6 +110,7 @@ public class FollowingFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progressBarFollowing.setVisibility(View.INVISIBLE);
                 String respBody = new String(responseBody);
                 Log.d(TAG, "onFailure: fragmen gagal api "+respBody);
                 String errorMessage;

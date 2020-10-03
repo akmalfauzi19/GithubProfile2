@@ -33,7 +33,6 @@ public class DetailProfileNew extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_detail_profile_new);
         Profile profile = getIntent().getParcelableExtra(EXTRA_PROFILE);
         Log.d(TAG, "pemanggilan Detail " +profile);
@@ -51,7 +50,7 @@ public class DetailProfileNew extends AppCompatActivity {
          tvDtlFollowers = findViewById(R.id.tv_dtl_followers_new);
          tvDtlFollowing = findViewById(R.id.tv_dtl_following_new);
          imgDtlAvatar = findViewById(R.id.img_dtl_avatar_new);
-
+         
         getListProfiles(profile.getUsername());
         Log.d(TAG, "detail oncreate " +profile.getUsername());
 

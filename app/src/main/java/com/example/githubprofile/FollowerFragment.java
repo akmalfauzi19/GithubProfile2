@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class FollowerFragment extends Fragment {
     private static final String ARG_SECTION_USERNAME = "username";
     String username;
     private RecyclerView rvFrgFollowerProfile;
+    private ProgressBar progressBarFollowers;
     public FollowerFragment() {
         // Required empty public constructor
     }
@@ -76,11 +78,13 @@ public class FollowerFragment extends Fragment {
 
         rvFrgFollowerProfile = view.findViewById(R.id.rv_frg_follower_profile);
         rvFrgFollowerProfile.setHasFixedSize(true);
+        progressBarFollowers = view.findViewById(R.id.progressBarFollower);
         getListProfiles(username);
         Log.d(TAG, "onViewCreated: onview fragment"+username);
     }
 
     private void getListProfiles(String username){
+        progressBarFollowers.setVisibility(View.VISIBLE);
         Log.d(TAG, "getListProfiles: fragment "+username);
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.github.com/users/"+username+"/followers";
@@ -90,6 +94,7 @@ public class FollowerFragment extends Fragment {
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                progressBarFollowers.setVisibility(View.INVISIBLE);
                 String result = new String(responseBody);
 
                 Log.d(TAG, result);
@@ -112,6 +117,7 @@ public class FollowerFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progressBarFollowers.setVisibility(View.INVISIBLE);
                 String respBody = new String(responseBody);
                 Log.d(TAG, "onFailure: fragmen gagal api "+respBody);
                 String errorMessage;
