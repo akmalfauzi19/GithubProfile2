@@ -28,10 +28,10 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.example.githubprofile.DetailProfileNew.EXTRA_PROFILE;
+
 public class MainActivity extends AppCompatActivity{
     private RecyclerView rvProfile;
-
-
     private ArrayList<Profile> Profiles = new ArrayList<>();
     private static final String TAG = MainActivity.class.getSimpleName();
     private ProgressBar progressBar;
@@ -65,13 +65,10 @@ public class MainActivity extends AppCompatActivity{
                     Log.i("query",query);
                     Profiles.clear();
                     getSearchListProfiles(query);
-//
                     return true;
                 }
-
                 @Override
                 public boolean onQueryTextChange(String newText) {
-
                     return false;
                 }
             });
@@ -86,7 +83,9 @@ public class MainActivity extends AppCompatActivity{
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.github.com/search/users?q="+ username;
 //        client.addHeader("Authorization", "token f870bb864a2edeb5d3b1eaa7ba7d001c9b9dcbce");
-        client.addHeader("User-Agent", "request");
+//        client.addHeader("User-Agent", "request");
+        client.addHeader("User-Agent","request");
+        client.addHeader("Authorization", "token 043342da33813c9600cf2e6e5efd743f131a8ec9");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -105,7 +104,6 @@ public class MainActivity extends AppCompatActivity{
                         profile.setImgavatar(item.getString("avatar_url"));
                         Profiles.add(profile);
                     }
-
                 showRecylerList();
 
                 }catch (Exception e) {
@@ -143,9 +141,11 @@ public class MainActivity extends AppCompatActivity{
     public void getListProfiles(){
         progressBar.setVisibility(View.VISIBLE);
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = "https://api.github.com/users?q=akmalfauzi19";
+        String url = "https://api.github.com/users?q=sidiqpermana";
 //        client.addHeader("Authorization", "token f870bb864a2edeb5d3b1eaa7ba7d001c9b9dcbce");
-        client.addHeader("User-Agent", "request");
+//        client.addHeader("User-Agent", "request");
+        client.addHeader("User-Agent","request");
+        client.addHeader("Authorization", "token 043342da33813c9600cf2e6e5efd743f131a8ec9");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -161,17 +161,11 @@ public class MainActivity extends AppCompatActivity{
                     for (int i = 0; i < items.length(); i++ ) {
                         JSONObject item = items.getJSONObject(i);
                         Profile profile = new Profile();
-// String api_userName = item.getString("login");
-// String api_Avatar = item.getString("avatar_url");
                         profile.setUsername(item.getString("login"));
                         profile.setImgavatar(item.getString("avatar_url"));
-// profile.setUsername(api_userName);
-// profile.setImgavatar(api_Avatar);
                         Profiles.add(profile);
                     }
-
                     showRecylerList();
-
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -200,12 +194,7 @@ public class MainActivity extends AppCompatActivity{
                 Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
-
-
-
     private void showRecylerList() {
         Log.d(TAG, "showRecylerList: list data");
         rvProfile.setLayoutManager(new LinearLayoutManager(this));
@@ -219,17 +208,14 @@ public class MainActivity extends AppCompatActivity{
         }
         });
     }
-
     private void showSelectedHero(Profile profile) {
         Toast.makeText(this, "Kamu memilih " + profile.getUsername(), Toast.LENGTH_SHORT).show();
-        Intent detailIntent = new Intent(MainActivity.this, DetailProfile.class);
+        Intent detailIntent = new Intent(MainActivity.this, DetailProfileNew.class);
 //        data
         getListProfiles();
-
         detailIntent.putExtra(DetailProfile.EXTRA_PROFILE, profile);
+        Log.d(TAG, "showSelectedHero: pemanggilan Main" +profile);
         startActivity(detailIntent);
     }
-
-
 
  }

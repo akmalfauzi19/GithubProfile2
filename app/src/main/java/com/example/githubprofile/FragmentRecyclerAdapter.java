@@ -1,6 +1,5 @@
 package com.example.githubprofile;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,27 +14,22 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
-public class ProfileRecyclerAdapter extends RecyclerView.Adapter<ProfileRecyclerAdapter.ProfileViewHolder> {
+public class FragmentRecyclerAdapter extends RecyclerView.Adapter<FragmentRecyclerAdapter.FragmenViewHolder> {
     private ArrayList<Profile> Profiles;
-    private OnItemClickCallback onItemClickCallback;
 
-    public ProfileRecyclerAdapter(ArrayList<Profile> Profiles) {
+    public FragmentRecyclerAdapter(ArrayList<Profile> Profiles) {
         this.Profiles = Profiles;
+    }
 
-    }
-    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback;
-    }
     @NonNull
     @Override
-    public ProfileViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public FragmenViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_profile, viewGroup, false);
-        return new ProfileViewHolder(view);
+        return new FragmenViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProfileViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull FragmenViewHolder holder, int position) {
         Profile profile = Profiles.get(position);
         Glide.with(holder.itemView.getContext())
                 .load(profile.getImgavatar())
@@ -43,14 +37,6 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter<ProfileRecycler
                 .into(holder.imgAvatar);
 
         holder.tvUsername.setText(profile.getUsername());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickCallback.onItemClicked(Profiles.get(holder.getAdapterPosition()));
-            }
-        });
-
     }
 
     @Override
@@ -58,17 +44,13 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter<ProfileRecycler
         return Profiles.size();
     }
 
-    public class ProfileViewHolder extends RecyclerView.ViewHolder {
+    public class FragmenViewHolder extends RecyclerView.ViewHolder {
         ImageView imgAvatar;
-        TextView  tvUsername;
-        public ProfileViewHolder(@NonNull View itemView) {
+        TextView tvUsername;
+        public FragmenViewHolder(@NonNull View itemView) {
             super(itemView);
             imgAvatar = itemView.findViewById(R.id.img_avatar);
             tvUsername = itemView.findViewById(R.id.tv_username);
-
         }
-    }
-    public interface OnItemClickCallback {
-        void onItemClicked(Profile data);
     }
 }
